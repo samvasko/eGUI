@@ -1,23 +1,23 @@
 /**************************************************************************
-* 
+*
 * Copyright 2014 by Petr Gargulak. eGUI Community.
 * Copyright 2009-2013 by Petr Gargulak. Freescale Semiconductor, Inc.
 *
 ***************************************************************************
 * This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Lesser General Public License Version 3 
+* it under the terms of the GNU Lesser General Public License Version 3
 * or later (the "LGPL").
 *
 * As a special exception, the copyright holders of the eGUI project give you
 * permission to link the eGUI sources with independent modules to produce an
 * executable, regardless of the license terms of these independent modules,
-* and to copy and distribute the resulting executable under terms of your 
+* and to copy and distribute the resulting executable under terms of your
 * choice, provided that you also meet, for each linked independent module,
 * the terms and conditions of the license of that module.
-* An independent module is a module which is not derived from or based 
-* on this library. 
-* If you modify the eGUI sources, you may extend this exception 
-* to your version of the eGUI sources, but you are not obligated 
+* An independent module is a module which is not derived from or based
+* on this library.
+* If you modify the eGUI sources, you may extend this exception
+* to your version of the eGUI sources, but you are not obligated
 * to do so. If you do not wish to do so, delete this
 * exception statement from your version.
 *
@@ -34,11 +34,11 @@
 * @file      d4d_screen_main.c
 *
 * @author    Petr Gargulak
-* 
+*
 * @version   0.0.3.0
-* 
+*
 * @date      Jan-14-2014
-* 
+*
 * @brief     D4D driver - main screen source file of eGUI/D4D demo application
 *
 ******************************************************************************/
@@ -206,7 +206,7 @@ Byte dataTraceRight[GRAPH_DATA_HISTORY];
 D4D_DECLARE_STD_RGRAPH_BEGIN(scrMain_graph, "Input Audio Signal", GRAPH_POSX, GRAPH_POSY, GRAPH_SIZEX, GRAPH_SIZEY, 8, 4, 2, 20, FONT_ARIAL7, FONT_ARIAL7)
   D4D_DECLARE_GRAPH_TRACE(dataTraceLeft, D4D_COLOR_RED, D4D_LINE_THIN, D4D_GRAPH_TRACE_TYPE_LINE)
   D4D_DECLARE_GRAPH_TRACE(dataTraceRight, D4D_COLOR_GREEN, D4D_LINE_THIN, D4D_GRAPH_TRACE_TYPE_LINE)
-D4D_DECLARE_GRAPH_END()  
+D4D_DECLARE_GRAPH_END()
 
 // Buttons
 D4D_DECLARE_TXT_RBUTTON(scrMain_btnPlay, "Play", BTN_POSX(0), BTN_POSY, BTN_SIZEX, BTN_SIZEY, BTN_RADIUS, FONT_BERLIN_SANS_FBDEMI12, ScrMain_OnClickBtnPlay)
@@ -251,7 +251,7 @@ D4D_DECLARE_STD_SCREEN_BEGIN(screen_main, ScreenMain_)
   D4D_DECLARE_SCREEN_OBJECT(scrMain_lblTitle1)
   D4D_DECLARE_SCREEN_OBJECT(scrMain_graph)
   D4D_DECLARE_SCREEN_OBJECT(scrMain_lblVol)
-  D4D_DECLARE_SCREEN_OBJECT(scrMain_sldrVol)  
+  D4D_DECLARE_SCREEN_OBJECT(scrMain_sldrVol)
   D4D_DECLARE_SCREEN_OBJECT(scrMain_lblBal)
   D4D_DECLARE_SCREEN_OBJECT(scrMain_sldrBalance)
   D4D_DECLARE_SCREEN_OBJECT(scrMain_gaugeLeft)
@@ -263,11 +263,11 @@ D4D_DECLARE_STD_SCREEN_BEGIN(screen_main, ScreenMain_)
   D4D_DECLARE_SCREEN_OBJECT(scrMain_picFsl)
   D4D_DECLARE_SCREEN_OBJECT(scrMain_icnAnimEqu)
   D4D_DECLARE_SCREEN_OBJECT(scrMain_btnMenu)
-D4D_DECLARE_SCREEN_END()    
+D4D_DECLARE_SCREEN_END()
 
 /*****************************************************************************
 *
-* Local variables 
+* Local variables
 *
 *
 *****************************************************************************/
@@ -278,7 +278,7 @@ static Byte* pDummyMusic;
 
 /*****************************************************************************
 *
-* Local function 
+* Local function
 *
 *
 *****************************************************************************/
@@ -311,10 +311,10 @@ static void ScrMain_OnClickBtnMenu(D4D_OBJECT* pThis)
 //Slider OnChange CallBack
 static void ScrMain_OnChangeSldr(D4D_OBJECT* pThis)
 {
-  D4D_TCHAR tmp_txt[4];     
+  D4D_TCHAR tmp_txt[4];
   tmp_txt[D4D_SprintDecS8(D4D_SldrGetValue(pThis), &tmp_txt[0], 0)] = 0;
   D4D_SldrSetText(pThis, tmp_txt);
-  
+
   if(pThis == &scrMain_sldrBalance)
   {
     Log_AddObjectEvent(pThis, "Balance Changed.");
@@ -343,7 +343,7 @@ static void ScrMain_OnChangeCheckBRight(D4D_OBJECT* pThis)
 
 /*****************************************************************************
 *
-* Screen system functions 
+* Screen system functions
 *
 *
 *****************************************************************************/
@@ -358,10 +358,10 @@ static void ScreenMain_OnInit()
   // Gauges initialization
   D4D_GaugSetLimits(&scrMain_gaugeLeft, &tmp_glimits);
   D4D_GaugSetLimits(&scrMain_gaugeRight, &tmp_glimits);
-  
+
   // Balance slider initialization
   D4D_SldrSetLimits(&scrMain_sldrBalance, &tmp_limits);
-  
+
   // Volume slider initialization
   tmp_limits.valueMax = 32;
   tmp_limits.valueMin = 0;
@@ -373,105 +373,49 @@ static void ScreenMain_OnInit()
 
   // Labels text propeties initialization
   tmp_txtProperties = D4D_ALIGN_H_CENTER_MASK | D4D_ALIGN_V_CENTER_MASK;
-  
-  D4D_SetTextProperties(&scrMain_lblVol, tmp_txtProperties);  
+
+  D4D_SetTextProperties(&scrMain_lblVol, tmp_txtProperties);
   D4D_SetTextProperties(&scrMain_lblBal, tmp_txtProperties);
   D4D_SetTextProperties(&scrMain_lblTitle, tmp_txtProperties);
   D4D_SetTextProperties(&scrMain_lblTitle1, tmp_txtProperties);
-  
+
   // Check boxes initialization
   D4D_CheckBoxSetValue(&scrMain_checkBxLeft, D4D_TRUE);
   D4D_CheckBoxSetValue(&scrMain_checkBxRight, D4D_TRUE);
-  
+
   D4D_IconAnimationSetCounts(&scrMain_icnAnimEqu, 4);
   D4D_IconAnimationStart(&scrMain_icnAnimEqu);
-  
+
   Log_AddScreenEvent("Main", "OnInit");
-  
+
 }
 
 // Screen on Activate function called with each screen activation
 static void ScreenMain_OnActivate()
 {
   pDummyMusic = 0;
-  Log_AddScreenEvent("Main", "OnActivate");  
+  Log_AddScreenEvent("Main", "OnActivate");
 }
 
 // Screen "Main" function called periodically in each D4D_poll runs
 static void ScreenMain_OnMain()
 {
 
-  // if music is enabled
-  if(musicEnable)
-  {
-    // each 100ms
-    if(time.bits.b100ms)
-    {
-      Byte tmp_output;
-      
-      time.bits.b100ms = 0;  
-      // add new data into "input audio signal" graph
-      D4D_GraphAddTracesData(&scrMain_graph, pDummyMusic);
-      
-      
-      // if left output signal is enable (check the check box)
-      if(D4D_CheckBoxGetValue(&scrMain_checkBxLeft))
-      {        
-        // modify the input signal to fit to the gauge
-        tmp_output = (Byte)(255 - pDummyMusic[0]);
-        
-        tmp_output /= 2;
-        
-        // Compute with volume of signal
-        tmp_output = D4D_MulDivUU8(tmp_output, (Byte)(D4D_SldrGetValue(&scrMain_sldrVol)), 32);
-        
-        // Compute with balance of signal
-        if(D4D_SldrGetValue(&scrMain_sldrBalance) > 0)
-          tmp_output = D4D_MulDivUU8(tmp_output, (Byte)(17 - D4D_SldrGetValue(&scrMain_sldrBalance)), 16);          
 
-        
-        D4D_GaugSetValue(&scrMain_gaugeLeft, (D4D_GAUGE_VALUE)(tmp_output));
-      }
-      
-      // if left output signal is enable (check the check box)
-      if(D4D_CheckBoxGetValue(&scrMain_checkBxRight))
-      {
-        // modify the input signal to fit to the gauge
-        tmp_output = (Byte)(255 - pDummyMusic[1]);
-        
-        tmp_output /= 2;
-        
-        // Compute with volume of signa
-        tmp_output = D4D_MulDivUU8(tmp_output, (Byte)(D4D_SldrGetValue(&scrMain_sldrVol)), 32);
-        
-        // Compute with balance of signal
-        if(D4D_SldrGetValue(&scrMain_sldrBalance) < 0)
-          tmp_output = D4D_MulDivUU8(tmp_output, (Byte)(17 + D4D_SldrGetValue(&scrMain_sldrBalance)), 16);
-
-        
-        D4D_GaugSetValue(&scrMain_gaugeRight, (D4D_GAUGE_VALUE)(tmp_output));
-      }
-      
-      // update pointer to dummy data in memory of MCU
-      pDummyMusic += 2;
-      
-    }
-  }
-    
 }
 
 
 // Screen on DeActivate function called with each screen deactivation
 static void ScreenMain_OnDeactivate()
 {
-  Log_AddScreenEvent("Main", "OnDeActivate");    
+  Log_AddScreenEvent("Main", "OnDeActivate");
 }
 
 // Screen on message function called with each internal massage for this screen
 static Byte ScreenMain_OnObjectMsg(D4D_MESSAGE* pMsg)
 {
   D4D_UNUSED(pMsg);
-  
+
   return 0;
 }
 
